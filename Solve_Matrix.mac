@@ -1,0 +1,36 @@
+dimMatrix(theMatrix):=block(
+    nL_theMatrix:length(col(theMatrix, 1)),
+    nC_theMatrix:length(row(theMatrix, 1)[1]),
+    return([nL_theMatrix,nC_theMatrix])
+)$
+
+testMatrix(someMatrix1,someMatrix2):=block(
+    err:-1,
+    dim_Matrix1:dimMatrix(someMatrix1),
+    dim_Matrix2:dimMatrix(someMatrix2),
+    if (not(dim_Matrix1[1]=dim_Matrix2[1]) or not(dim_Matrix1[2]=dim_Matrix2[2])) then return (err) else return(0)
+)$
+
+solveMatrix(Matrix1,Matrix2,ListeVariables):=block(
+    Errtest:testMatrix(Matrix1,Matrix2),
+    if (Errtest=0) then(
+    Rep:[],
+    ListeEq:[],
+    DimMatrix:length(Matrix1[1]),
+    for lig: 1 while lig<1+DimMatrix do(
+        for col: 1 while col<1+DimMatrix do(
+        ListeEq:append(ListeEq,[Matrix1[lig,col]=Matrix2[lig,col]])
+        )),
+    Rep:solve(ListeEq,ListeVariables),
+    print("Equations"),
+    print(ListeEq),
+    print("Variables"),
+    print(ListeVariables),
+    print("Solutions"),
+    return(Rep)
+    )
+    else(
+    print("diffirent matrix dim error"),
+    return(Errtest)
+    )
+)$
