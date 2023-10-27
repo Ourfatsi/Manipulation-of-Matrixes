@@ -1,0 +1,98 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 22.04.0 ] */
+/* [wxMaxima: input   start ] */
+kill(all);
+load("Matrix_Macs.mac")$
+algorithm(4);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+load("Matrix_Macs.mac")$
+
+B[1,1]:basicSquareMatrix(2,1,1);
+B[1,2]:basicSquareMatrix(2,1,2);
+B[2,1]:basicSquareMatrix(2,2,1);
+B[2,2]:basicSquareMatrix(2,2,2);
+
+PolynomeL:matrix([a_1,b_1],[c_1,d_1]);
+PolynomeR:matrix([a_2,b_2],[c_2,d_2]);
+theMatrixPolynomeL:[[a_1,B[1,1]],[b_1,B[1,2]],[c_1,B[2,1]],[d_1,B[2,2]]];
+theMatrixPolynomeR:[[a_2,B[1,1]],[b_2,B[1,2]],[c_2,B[2,1]],[d_2,B[2,2]]];
+
+mult_VPolynome(theMatrixPolynomeL,theMatrixPolynomeR);
+PolynomeL.PolynomeR;
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+n:3;m:4;o:6;
+A:genmatrix(a,n,m);
+B:genmatrix(b,m,o);
+P(X):=matrixToPolynome(X,V);
+P(A);
+P(B);
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+load("Matrix_Macs.mac")$
+M1:matrix(
+        [a_11,    a_21, a_31,0,0,0,0,0,0],
+        [a_12,    a_22, a_32,0,0,0,0,0,0],
+        [a_13,    a_23, a_33,0,0,0,0,0,0],
+        [0,0,0,a_11,    a_21, a_31,0,0,0],
+        [0,0,0,a_12,    a_22, a_32,0,0,0],
+        [0,0,0,a_13,    a_23, a_33,0,0,0],
+        [0,0,0,0,0,0,a_11,    a_21, a_31],
+        [0,0,0,0,0,0,a_12,    a_22, a_32],
+        [0,0,0,0,0,0,a_13,    a_23, a_33]
+    );
+M2: matrix(
+ [a_11,0,0,a_12,0,0,a_13,0,0], 
+ [0,a_11,0,0,a_12,0,0,a_13,0], 
+ [0,0,a_11,0,0,a_12,0,0,a_13], 
+ [a_21,0,0,a_22,0,0,a_23,0,0], 
+ [0,a_21,0,0,a_22,0,0,a_23,0], 
+ [0,0,a_21,0,0,a_22,0,0,a_23], 
+ [a_31,0,0,a_32,0,0,a_33,0,0], 
+ [0,a_31,0,0,a_32,0,0,a_33,0], 
+ [0,0,a_31,0,0,a_32,0,0,a_33]
+)$
+M:M2-M1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a_11:10;
+a_12:10;
+a_13:10;
+a_21:10;
+a_22:10;
+a_23:10;
+a_31:10;
+a_32:10;
+a_33:10;
+M:matrix(
+        [-a_12, a_11-a_22,  -a_32,  0,  a_12,   0,  0,  a_13,   0],
+        [-a_13, -a_23,  a_11-a_33,  0,  0,  a_12,   0,  0,  a_13],
+        [a_21,  0,  0,  a_22-a_11,  -a_21,  -a_31,  a_23,   0,  0],
+        [a_31,  0,  0,  a_32,   0,  0,  a_33-a_11,  -a_21,  -a_31],
+        [0, a_31,   0,  0,  a_32,   0,  -a_12,  a_33-a_22,  -a_32],
+        [0, a_21,   0,  -a_12,  0,  -a_32,  0,  a_23,   0],
+        [0, -a_21,  -a_31,  a_12,   0,  0,  a_13,   0,  0],
+        [0, 0,  a_31,   0,  0,  a_32,   -a_13,  -a_23,  0],
+        [0, 0,  a_21,   -a_13,  -a_23,  a_22-a_33,  0,  0,  a_23]
+    );
+gausseTriangulate(M);
+
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 22.04.0"$
