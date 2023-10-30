@@ -1,0 +1,400 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 22.04.0 ] */
+/* [wxMaxima: input   start ] */
+genEquations(n,var):=block(
+    Q: genmatrix(var, n, n),
+    Rep:Q[1],
+    for i:1 while i<n do (
+        Rep:append(Rep,Q[i+1])
+    ),
+    return(Rep)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+matrixToList(aMatrix):=block(
+    nL:length(col(aMatrix, 1)),
+    Rep:aMatrix[1],
+    for i:1 while i<nL do (
+        Rep:append(Rep,aMatrix[i+1])
+    ),
+    return(Rep)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+generateFormattedMatrix(var,n):=block(
+    FormattedMatrix:genmatrix(var,n,n),
+    for i:1 while i<n do (
+        for j:1 while j<n do (
+            if not (i=j) then FormattedMatrix[i,j]:0)
+    ),
+    return(FormattedMatrix)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+variableList(aMatrix):=block(
+    nL:length(col(aMatrix, 1)),
+    nC:length(row(aMatrix, 1)[1]),
+    Rep:[],
+    for i:1 while i<=nL do (
+        for j:1 while j<=nC do (
+            if (not (i=nL and j=nC) and not (aMatrix[i,j]=0)) then Rep:append(Rep,[aMatrix[i,j]])
+        )
+    ),
+    return(Rep)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+variableList(aMatrix):=block(
+    nL:length(col(aMatrix, 1)),
+    nC:length(row(aMatrix, 1)[1]),
+    Rep:[],
+    for i:1 while i<=nL do (
+        for j:1 while j<=nC do (
+            if (not (i=nL and j=nC) and not (aMatrix[i,j]=0)) then Rep:append(Rep,[aMatrix[i,j]])
+        )
+    ),
+    return(Rep)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+algorithm(n):=block(
+    tamponA: genmatrix(a, n, n),
+    tamponQ: generateFormattedMatrix(x,n),
+    tamponM:tamponA.tamponQ-tamponQ.tamponA,
+    tamponL:matrixToList(tamponM),
+    tamponV:variableList(tamponQ),
+    solve(tamponL,tamponV)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+dressMatrix(aMatrix,var):=block(
+    nL:length(col(aMatrix, 1)),
+    nC:length(row(aMatrix, 1)[1]),
+    xTampon:genmatrix(var,nL+1,nC+1),
+    for i : 1 while i<nL+1 do (
+        for j : 1 while j<nC+1 do (
+            if (i<nL+1 and j<nC+1) then xTampon[i,j]:aMatrix[i,j]
+        )
+    ),
+    return(xTampon)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+augmentMatrix(aMatrix):=block(
+    nL:length(col(aMatrix, 1)),
+    nC:length(row(aMatrix, 1)[1]),
+    xTampon:genmatrix(var,nL+1,nC+1),
+    for i : 1 while i<=nL+1 do (
+        for j : 1 while j<=nC+1 do (
+            if (i<nL+1 and j<nC+1) then xTampon[i,j]:aMatrix[i,j] else (xTampon[i,j]:0)
+        )
+    ),
+    return(xTampon)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+generateZeroMatrix(nL,nC):=block(
+    xTampon:genmatrix(someVar,nL,nC),
+    for i : 1 while i<=nL do (
+        for j : 1 while j<=nC do (
+            xTampon[i,j]:0)
+    ),
+    return(xTampon)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+generateIdMatrix(n):=block(
+    xTampon:genmatrix(someVar,n,n),
+    for i : 1 while i<=n do (
+        for j : 1 while j<=n do (
+            if not(i=j) then xTampon[i,j]:0 else (xTampon[i,j]:1)
+        )
+    ),
+    return(xTampon)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+generateDiagonalMatrix(someList):=block(
+    n:length(someList),
+    xTampon:genmatrix(someVar,n,n),
+    for i : 1 while i<=n do (
+        for j : 1 while j<=n do (
+            if not(i=j) then xTampon[i,j]:0 else (xTampon[i,j]:someList[i])
+        )
+    ),
+    return(xTampon)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+basicMatrix(nL,nC,L,C):=block(
+    if (L>nL) or (C>nC) or (L*C<=0) then return(-1) else (
+        xTampon:genmatrix(someVar,nL,nC),
+        for some_l : 1 while some_l<=nL do (
+            for some_c : 1 while some_c<=nC do (
+            if not (some_l=L and some_c=C) then xTampon[some_l,some_c]:0 else (xTampon[some_l,some_c]:1)
+            )
+        ),
+        return(xTampon)
+    )
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+basicSquareMatrix(n,L,C):=block(
+    if (L>n) or (C>n) or (L*C<=0) then return(-1) else (
+        xTampon:genmatrix(someVar,n,n),
+        for some_l : 1 while some_l<=n do (
+            for some_c : 1 while some_c<=n do (
+                if not(some_l=L and some_c=C) then xTampon[some_l,some_c]:0 else (xTampon[some_l,some_c]:1)
+            )
+        ),
+        return(xTampon)
+    )
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+genLine(someVar,fix_L,var_C):=block(
+    someList:[],
+    for qq_i:1 while qq_i<=var_C do (
+        someList:append(someList,[someVar[fix_L,qq_i]])
+    ),
+    someList:apply('matrix,[someList]),
+    return(someList)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+genCol(someVar,var_L,fix_C):=block(
+    someList:[],
+    for qq_i:1 while qq_i<=var_L do (
+        someList:append(someList,[someVar[qq_i,fix_C]])
+    ),
+    someList:transpose(apply('matrix,[someList])),
+    return(someList)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+matrixToPolynome(theMatrix,vBase):=block(
+    Outp_matrixToPolynome:[],
+    nL_theMatrix:length(col(theMatrix, 1)),
+    nC_theMatrix:length(row(theMatrix, 1)[1]),
+    for some_i : 1 while some_i <= nL_theMatrix do (
+        for some_j : 1 while some_j <= nC_theMatrix do (
+            Outp_matrixToPolynome:append(Outp_matrixToPolynome,[[theMatrix[some_i,some_j],vBase[some_i,some_j]]])
+        )
+    ),
+    return(Outp_matrixToPolynome)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+polynomeToMatrix(thePolynome):=block(
+    indice:0,
+    length_thePolynome:length(thePolynome),
+    nL:length(first(thePolynome)),
+    nC:length_thePolynome/nL,
+    Outp_polynomeToMatrix:generateZeroMatrix(nL,nC),
+    for some_i : 1 while (some_i <= nL) do (
+        for some_j : 1 while (some_j <= nC) do (
+            indice:nC.(some_i-1)+some_j,
+            Outp_polynomeToMatrix:Outp_polynomeToMatrix+first(thePolynome[indice])*basicMatrix(nL,nC,some_i,some_j)
+        )
+    ),
+    return(Outp_polynomeToMatrix)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+mult_Vectors(Vect1,Vect2):=block(
+    return(first(Vect1)*first(Vect2)*(second(Vect1).second(Vect2)))
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sum_Vectors(Vect1,Vect2):=block(
+    return(first(Vect1)*second(Vect1)+(first(Vect2).second(Vect2)))
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+mult_VPolynome(theMatrixPolynomeL,theMatrixPolynomeR):=block(
+    length_MatrixPolynomeL:length(theMatrixPolynomeL),
+    length_MatrixPolynomeR:length(theMatrixPolynomeR),
+    nL_L:length(first(theMatrixPolynomeL)),
+    nC_L:length_MatrixPolynomeL/nL_L,
+    nL_R:length(first(theMatrixPolynomeR)),
+    nC_R:length_MatrixPolynomeR/nL_R,
+    if not (nC_L = nC_R) then return (-1) else (
+        Out_mult_VPolynome:0,
+        for some_i : 1 while (some_i <= length_MatrixPolynomeL) do (
+            for some_j : 1 while (some_j <= length_MatrixPolynomeR) do (
+                xtampon:mult_Vectors(theMatrixPolynomeL[some_i],theMatrixPolynomeR[some_j]),
+                Out_mult_VPolynome:(Out_mult_VPolynome+[xtampon])
+            )
+        ),
+        return(first(Out_mult_VPolynome))
+    )
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Does not work with all matrices (containing zeros)! */
+gausseTriangulate(inMatrix):=block(
+    /*Changes the input*/
+    nL_inMatrix:length(col(inMatrix,1)),
+    nC_inMatrix:length(row(inMatrix,1)[1]),
+    nStages:min(nL_inMatrix,nC_inMatrix),
+    out_gausseTriangulate: inMatrix, /*Do not replicate input, just an etiquette*/
+    for stage : 1 while stage < nStages do (
+        for k : 1 while k<=(nL_inMatrix-stage) do (
+            out_gausseTriangulate[stage+1+(k-1)]:
+            out_gausseTriangulate[stage,stage]*out_gausseTriangulate[stage+1+(k-1)]-out_gausseTriangulate[stage+1+(k-1),stage]*out_gausseTriangulate[stage]
+        )
+    ),
+    return (out_gausseTriangulate)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+permuteLignesInMatrix(inMatrix,Ligne1,Ligne2):=block(
+    /*Changes the input*/
+    xtampon:inMatrix[Ligne1],
+    inMatrix[Ligne1]:inMatrix[Ligne2],
+    inMatrix[Ligne2]:xtampon,
+    return(inMatrix)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+permuteLignesInMatrix_1(inMatrix,Ligne1,Ligne2):=block(
+    /*Copies the input*/
+    nL_inMatrix:length(col(inMatrix,1)),
+    nC_inMatrix:length(row(inMatrix,1)[1]),
+    out_permuteLignesinMatrix:genmatrix(varBidon,nL_inMatrix,nC_inMatrix),
+    for count : 1 while count <= nL_inMatrix do (
+        out_permuteLignesinMatrix[count]:inMatrix[count]
+    ),
+    out_permuteLignesinMatrix[Ligne1]:inMatrix[Ligne2],
+    out_permuteLignesinMatrix[Ligne2]:inMatrix[Ligne1],
+    return(out_permuteLignesinMatrix)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+orderByInsertion(someTab):=block(
+    /*Changes the input*/
+    max:length(someTab),
+    mem:0,
+    for i : 2 while i<=max do (
+        mem:someTab[i],
+        j:i,
+        while ((j>1) and (someTab[j-1] > mem )) do (
+            someTab[j]:someTab[j-1],
+            j:j-1),
+        someTab[j]:mem
+    ),
+    return(someTab)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+orderByInsertion_1(someTab):=block(
+    /*Copies the input*/
+    max:length(someTab),
+    mem:0,
+    out_orderByInsertion_1:[],
+    for i : 1 while i<=max do (
+        out_orderByInsertion_1:append(out_orderByInsertion_1,[someTab[i]])
+    ),
+    for i : 2 while i<=max do (
+        mem:out_orderByInsertion_1[i],
+        j:i,
+        while ((j>1) and (out_orderByInsertion_1[j-1] > mem )) do (
+            out_orderByInsertion_1[j]:out_orderByInsertion_1[j-1],j:j-1
+        ),
+        out_orderByInsertion_1[j]:mem
+    ),
+    return(out_orderByInsertion_1)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+orderFallByInsertion(someDoubleTab):=block(
+    /*Changes the input*/
+    max:length(someDoubleTab),
+    mem:0,
+    for i : 2 while i<=max do (
+        mem:someDoubleTab[i],
+        j:i,
+        while ((j>1) and (someDoubleTab[j-1][1] < mem[1] )) do (
+            someDoubleTab[j]:someDoubleTab[j-1],
+            j:j-1),
+        someDoubleTab[j]:mem
+    ),
+    return(someDoubleTab)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/*Something wrong*/
+/*
+reorderMatrix(someMatrix):=block(
+    /*Copies the input*/
+    nL:length(col(someMatrix,1)),
+    nC:length(row(someMatrix,1)[1]),
+    LsZ:[], /*Lines Starting with zeros*/
+    for i : 1 while i <= nL do (LsZ:append(LsZ,[[0,i]])),
+    for l : 1 while l <= nL do (
+        Flag:1,
+        for c : 1 while c <= nC  and not (Flag=0) do (
+            if not (someMatrix[l,c]=0) then Flag:0 else LsZ[l][1]:LsZ[l][1]+1)),
+    LsZ:orderFallByInsertion(LsZ),
+    Tr_someMatrix:someMatrix, /*Copy*/
+    for l : 1 while l <= nL do (Tr_someMatrix[l]:someMatrix[LsZ[l][2]]),
+    return(Tr_someMatrix)
+)$ */
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 22.04.0"$
